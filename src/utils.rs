@@ -1,7 +1,9 @@
 use crate::VtResult;
 use reqwest::{
-    blocking::{multipart::Form, Client, Response},
-    StatusCode,
+    blocking::{
+        multipart::Form as BlockingForm, Client as BlockingClient, Response as BlockingResponse,
+    },
+    Client, Response, StatusCode,
 };
 use serde::de::DeserializeOwned;
 
@@ -12,7 +14,7 @@ use serde::Serialize;
 
 /// Process a regular reqwest response
 #[inline]
-fn process_resp<T>(resp: Response) -> VtResult<T>
+fn process_resp<T>(resp: BlockingResponse) -> VtResult<T>
 where
     T: DeserializeOwned,
 {
@@ -24,10 +26,24 @@ where
     }
 }
 
+/// Process a regular reqwest response
+#[inline]
+async fn process_resp_async<T>(resp: Response) -> VtResult<T>
+where
+    T: DeserializeOwned,
+{
+    let status = resp.status();
+
+    match status {
+        StatusCode::OK => Ok(resp.json().await?), // 200
+        _ => Err((status, resp.text().await?).into()),
+    }
+}
+
 /// Process a bzipped reqwest response
 #[cfg(feature = "feeds")]
 #[inline]
-fn process_resp_bz<T>(resp: Response) -> VtResult<Vec<T>>
+fn process_resp_bz<T>(resp: BlockingResponse) -> VtResult<Vec<T>>
 where
     T: DeserializeOwned,
 {
@@ -51,7 +67,7 @@ pub(crate) fn http_get<T>(api_key: &str, user_agent: &str, url: &str) -> VtResul
 where
     T: DeserializeOwned,
 {
-    let client = Client::builder().user_agent(user_agent).build()?;
+    let client = BlockingClient::builder().user_agent(user_agent).build()?;
     let resp = client
         .get(url)
         .header("x-apikey", api_key)
@@ -60,13 +76,28 @@ where
     process_resp(resp)
 }
 
+/// GET from a URL asynchronously
+pub(crate) async fn http_get_async<T>(api_key: &str, user_agent: &str, url: &str) -> VtResult<T>
+where
+    T: DeserializeOwned,
+{
+    let client = Client::builder().user_agent(user_agent).build()?;
+    let resp = client
+        .get(url)
+        .header("x-apikey", api_key)
+        .header("Accept", "application/json")
+        .send()
+        .await?;
+    process_resp_async(resp).await
+}
+
 /// GET from a URL with bzipped response
 #[cfg(feature = "feeds")]
 pub(crate) fn http_get_bz<T>(api_key: &str, user_agent: &str, url: &str) -> VtResult<Vec<T>>
 where
     T: DeserializeOwned,
 {
-    let client = Client::builder().user_agent(user_agent).build()?;
+    let client = BlockingClient::builder().user_agent(user_agent).build()?;
     let resp = client
         .get(url)
         .header("x-apikey", api_key)
@@ -85,7 +116,7 @@ pub(crate) fn http_get_with_params<T>(
 where
     T: DeserializeOwned,
 {
-    let client = Client::builder().user_agent(user_agent).build()?;
+    let client = BlockingClient::builder().user_agent(user_agent).build()?;
     let resp = client
         .get(url)
         .header("x-apikey", api_key)
@@ -105,7 +136,7 @@ pub(crate) fn http_post<T>(
 where
     T: DeserializeOwned,
 {
-    let client = Client::builder().user_agent(user_agent).build()?;
+    let client = BlockingClient::builder().user_agent(user_agent).build()?;
     let resp = client
         .post(url)
         .header("x-apikey", api_key)
@@ -119,12 +150,12 @@ pub(crate) fn http_multipart_post<T>(
     api_key: &str,
     user_agent: &str,
     url: &str,
-    form_data: Form,
+    form_data: BlockingForm,
 ) -> VtResult<T>
 where
     T: DeserializeOwned,
 {
-    let client = Client::builder().user_agent(user_agent).build()?;
+    let client = BlockingClient::builder().user_agent(user_agent).build()?;
     let resp = client
         .post(url)
         .header("x-apikey", api_key)
@@ -144,7 +175,7 @@ where
     S: Serialize,
     T: DeserializeOwned,
 {
-    let client = Client::builder().user_agent(user_agent).build()?;
+    let client = BlockingClient::builder().user_agent(user_agent).build()?;
     let resp = client
         .post(url)
         .header("x-apikey", api_key)
@@ -158,7 +189,7 @@ pub(crate) fn http_delete<T>(api_key: &str, user_agent: &str, url: &str) -> VtRe
 where
     T: DeserializeOwned,
 {
-    let client = Client::builder().user_agent(user_agent).build()?;
+    let client = BlockingClient::builder().user_agent(user_agent).build()?;
     let resp = client.delete(url).header("x-apikey", api_key).send()?;
     process_resp(resp)
 }
@@ -170,7 +201,7 @@ where
     S: Serialize,
     T: DeserializeOwned,
 {
-    let client = Client::builder().user_agent(user_agent).build()?;
+    let client = BlockingClient::builder().user_agent(user_agent).build()?;
     let resp = client
         .patch(url)
         .header("x-apikey", api_key)

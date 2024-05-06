@@ -2,7 +2,7 @@ mod response;
 use response::{Root, ScanRoot};
 
 use crate::{
-    utils::{http_get, http_post},
+    utils::{http_get, http_get_async, http_post},
     VtClient, VtResult,
 };
 use base64::{engine::general_purpose::STANDARD, Engine as _};
@@ -60,6 +60,26 @@ impl VtClient {
             STANDARD.encode(resource_url).replace('=', "")
         );
         http_get(&self.api_key, &self.user_agent, &url)
+    }
+
+    pub async fn url_info_async(&self, resource_url: &str) -> VtResult<Root> {
+        //! Get the report of a given Url
+        //!
+        //! ## Example Usage
+        //!
+        //! ```rust
+        //! use vt3::VtClient;
+        //!
+        //! let vt = VtClient::new("Your API Key");
+        //! let resource = "https://www.example.com";
+        //! println!("{:?}", vt.url_info(resource));
+        //! ```
+        let url = format!(
+            "{}/urls/{}",
+            &self.endpoint,
+            STANDARD.encode(resource_url).replace('=', "")
+        );
+        http_get_async(&self.api_key, &self.user_agent, &url).await
     }
 
     pub fn url_info_by_id(&self, resource_id: &str) -> VtResult<Root> {
