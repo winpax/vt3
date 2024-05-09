@@ -1,4 +1,4 @@
-use vt3::VtClient;
+use async_vt3::VtClient;
 
 #[tokio::main]
 async fn main() {

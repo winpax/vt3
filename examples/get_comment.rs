@@ -1,4 +1,4 @@
-use vt3::VtClient;
+use async_vt3::VtClient;
 
 #[tokio::main]
 async fn main() {
@@ -13,7 +13,8 @@ async fn main() {
 
     let res = VtClient::new(&api_key)
         .user_agent("Chrome for Windows")
-        .get_comment(comment_id).await;
+        .get_comment(comment_id)
+        .await;
     match res {
         Ok(report) => println!("{:#?}", report),
         Err(e) => println!("Error: {}", e),

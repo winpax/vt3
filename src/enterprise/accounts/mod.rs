@@ -12,7 +12,7 @@ impl VtClient {
         //!
         //! ## Example Usage
         //! ```rust
-        //! use vt3::VtClient;
+        //! use async_vt3::VtClient;
         //!
         //! let vt = VtClient::new("Your API Key");
         //! vt.user_info("user_id");
@@ -26,7 +26,7 @@ impl VtClient {
         //!
         //! ## Example Usage
         //! ```rust
-        //! use vt3::VtClient;
+        //! use async_vt3::VtClient;
         //!
         //! let vt = VtClient::new("Your API Key");
         //! vt.delete_user("user_id");
@@ -45,7 +45,7 @@ impl VtClient {
         //!
         //! ## Example Usage
         //! ```rust
-        //! use vt3::VtClient;
+        //! use async_vt3::VtClient;
         //!
         //! let vt = VtClient::new("Your API Key");
         //!
@@ -74,7 +74,7 @@ impl VtClient {
         //!
         //! ## Example Usage
         //! ```rust
-        //! use vt3::VtClient;
+        //! use async_vt3::VtClient;
         //!
         //! let vt = VtClient::new("Your API Key");
         //! vt.overall_quotas("user_id");
@@ -88,7 +88,7 @@ impl VtClient {
         //!
         //! ## Example Usage
         //! ```rust
-        //! use vt3::VtClient;
+        //! use async_vt3::VtClient;
         //!
         //! let vt = VtClient::new("Your API Key");
         //! vt.overall_quotas("user_id");
@@ -102,7 +102,7 @@ impl VtClient {
         //!
         //! ## Example Usage
         //! ```rust
-        //! use vt3::VtClient;
+        //! use async_vt3::VtClient;
         //!
         //! let vt = VtClient::new("Your API Key");
         //! vt.group_members("user_id");
@@ -121,7 +121,7 @@ impl VtClient {
         //!
         //! ## Example Usage
         //! ```rust
-        //! use vt3::VtClient;
+        //! use async_vt3::VtClient;
         //!
         //! let vt = VtClient::new("Your API Key");
         //!

@@ -28,6 +28,7 @@ tokio-util = { version = "0.7", features = ["io"] }
 
 [dev-dependencies]
 tokio = { version = "1.37", features = ["full"] }
+tokio-test = "0.4.4"
 
 [features]
 all = ["enterprise", "feeds", "hunting"]

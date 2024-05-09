@@ -1,12 +1,13 @@
 # VirusTotal Api v3 (Public & Enterprise)
+
 ![Crates.io](https://img.shields.io/crates/v/vt3)
 [![Documentation](https://docs.rs/vt3/badge.svg)](https://docs.rs/vt3)
 ![docs.rs](https://img.shields.io/docsrs/vt3/latest)
 [![Build Status](https://travis-ci.com/marirs/vt3-rs.svg?branch=main)](https://travis-ci.com/marirs/vt3-rs)
 [![GitHub license](https://img.shields.io/github/license/marirs/vt3-rs)](https://github.com/marirs/vt3-rs/blob/main/LICENSE)
 
-VT3 provides an easy api interface to use VirusTotal v3 REST endpoints, 
-including those exclusive to VirusTotal Enterprise. See below for list of available API's:  
+VT3 provides an easy api interface to use VirusTotal v3 REST endpoints,
+including those exclusive to VirusTotal Enterprise. See below for list of available API's:
 
 - Public API
   - IP
@@ -22,7 +23,7 @@ including those exclusive to VirusTotal Enterprise. See below for list of availa
     - Get File information
     - Upload File to Scan
     - File ReScan
-  - Url  
+  - Url
     - Get Url information
     - Get Url information by ID
     - Url Scan
@@ -42,8 +43,8 @@ including those exclusive to VirusTotal Enterprise. See below for list of availa
     - Get Ruleset by ruleset id
     - Create Ruleset
     - Delete Ruleset
-    - Update Ruleset  
-  - Retro hunt  
+    - Update Ruleset
+  - Retro hunt
     - Get Retrohunt jobs
     - Get Retrohunt job by job id
     - Create a Retrohunt job
@@ -52,7 +53,7 @@ including those exclusive to VirusTotal Enterprise. See below for list of availa
 - Feeds (Enterprise) - `features = ["feeds"]`
   - File feeds
     - Get file feed batch
-    - Get file behaviours feed batch  
+    - Get file behaviours feed batch
     - Get file feed batch hourly
     - Get file behaviours feed batch hourly
   - Url feeds
@@ -60,26 +61,31 @@ including those exclusive to VirusTotal Enterprise. See below for list of availa
     - Get Url feed batch hourly
 
 ## Available `feature` flags
+
 - enterprise
 - feeds
 - hunting
 
 ## Usage
+
 - Cargo.toml
+
 ```toml
 [dependencies]
 vt3 = "0.7.3"
 ```
 
 - to enable enterprise features
+
 ```toml
 [dependencies]
 vt3 = { version = "0.7.3", features = ["enterprise"] }
 ```
 
 - and then: to get `ip information`
+
 ```rust
-use vt3::VtClient;
+use async_vt3::VtClient;
 
 fn main() {
     let api_key = match std::env::args()
@@ -102,10 +108,11 @@ fn main() {
     }
 }
 ```
+
 - Providing a `user agent` for the client
 
 ```rust
-use vt3::VtClient;
+use async_vt3::VtClient;
 
 fn main() {
     let api_key = match std::env::args()
@@ -132,7 +139,9 @@ fn main() {
 ```
 
 ## Examples
+
 To run the examples - `Universal API Endpoints`:
+
 - Domain info: `cargo run --example domain_info <your_api_key>`
 - IP info: `cargo run --example ip_info <your_api_key>`
 - URL info: `cargo run --example url_info <your_api_key>`
@@ -145,6 +154,7 @@ To run the examples - `Universal API Endpoints`:
 - Get comment by id: `cargo run --example get_comment <your_api_key>`
 
 To run the examples - `Enterprise API Endpoints`:
+
 - Get user information: `cargo run --example user_info --features="enterprise" <your_api_key> <user_id>`
 - Delete a user: `cargo run --example delete_user --features="enterprise" <your_api_key> <user_id>`
 - Get Api usage info: `cargo run --example api_usage --features="enterprise" <your_api_key> <user_id>`
@@ -152,8 +162,9 @@ To run the examples - `Enterprise API Endpoints`:
 - Get group information: `cargo run --example group_info --features="enterprise" <your_api_key> <group_id>`
 - Get group api usage: `cargo run --example group_api_usage --features="enterprise" <your_api_key> <group_id>`
 - Get group members: `cargo run --example group_members --features="enterprise" <your_api_key> <group_id>`
- 
-To run the examples - `Hunting API Endpoint`: 
+
+To run the examples - `Hunting API Endpoint`:
+
 - Get Livehunt rulesets: `cargo run --example livehunt_get_rulesets --features="hunting" <your_api_key>`
 - Get Retrohunt jobs: `cargo run --example retrohunt_jobs --features="hunting" <your_api_key>`
 
@@ -162,5 +173,5 @@ To run the examples - `Hunting API Endpoint`:
 - https://developers.virustotal.com/v3.0/reference
 
 ---
-License: MIT
 
+License: MIT

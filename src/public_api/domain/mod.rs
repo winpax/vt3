@@ -9,10 +9,12 @@ impl VtClient {
         //!
         //! ## Example Usage
         //! ```rust
-        //! use vt3::VtClient;
+        //! use async_vt3::VtClient;
         //!
         //! let vt = VtClient::new("Your API Key");
-        //! println!("{:?}", vt.domain_info("google.com"))
+        //! # tokio_test::block_on(async {
+        //! println!("{:?}", vt.domain_info("google.com").await)
+        //! # })
         //! ```
         let url = format!("{}/domains/{}", &self.endpoint, domain);
         http_get(&self.api_key, &self.user_agent, &url).await

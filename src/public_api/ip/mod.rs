@@ -25,10 +25,12 @@ impl VtClient {
         //!
         //! ## Example Usage
         //! ```rust
-        //! use vt3::VtClient;
+        //! use async_vt3::VtClient;
         //!
         //! let vt = VtClient::new("Your API Key");
-        //! println!("{:?}", vt.ip_info("192.168.2.1"));
+        //! # tokio_test::block_on(async {
+        //! println!("{:?}", vt.ip_info("192.168.2.1").await);
+        //! # })
         //! ```
         let url = format!("{}/ip_addresses/{}", &self.endpoint, ip_address);
         http_get(&self.api_key, &self.user_agent, &url).await
@@ -39,10 +41,12 @@ impl VtClient {
         //!
         //! ## Example Usage
         //! ```rust
-        //! use vt3::VtClient;
+        //! use async_vt3::VtClient;
         //!
         //! let vt = VtClient::new("API Key");
-        //! println!("{:?}", vt.ip_comments("192.168.2.1"));
+        //! # tokio_test::block_on(async {
+        //! println!("{:?}", vt.ip_comments("192.168.2.1").await);
+        //! # })
         //! ```
         let url = format!("{}/ip_addresses/{}/comments", &self.endpoint, ip_address);
         http_get(
@@ -62,8 +66,8 @@ impl VtClient {
         //!
         //! ## Example Usage
         //! ```rust
-        //! use vt3::VtClient;
-        //! use vt3::public_api::ip::CommentAttributes;
+        //! use async_vt3::VtClient;
+        //! use async_vt3::public_api::ip::CommentAttributes;
         //!
         //! let vt = VtClient::new("API Key");
         //! let attrs = CommentAttributes::new(
@@ -73,7 +77,9 @@ impl VtClient {
         //!     Some("This is an example".to_string()),
         //!     None,
         //! );
-        //! println!("{:?}", vt.add_ip_comment("192.168.2.1", attrs));
+        //! # tokio_test::block_on(async {
+        //! println!("{:?}", vt.add_ip_comment("192.168.2.1", attrs).await);
+        //! # })
         //! ```
         let url = format!("{}/ip_addresses/{}/comments", &self.endpoint, ip_address);
         let body = create_comment_req(attrs);
@@ -95,8 +101,8 @@ impl VtClient {
         //!
         //! ## Example Usage
         //! ```rust
-        //! use vt3::VtClient;
-        //! use vt3::public_api::ip::Relationships;
+        //! use async_vt3::VtClient;
+        //! use async_vt3::public_api::ip::Relationships;
         //!
         //! let vt = VtClient::new("API Key");
         //! let res =  vt.list_ip_related_objects("192.168.1.1", Relationships::Comments);
@@ -140,8 +146,8 @@ impl VtClient {
         //!
         //! ## Example Usage
         //! ```rust
-        //! use vt3::VtClient;
-        //! use vt3::public_api::ip::Relationships;
+        //! use async_vt3::VtClient;
+        //! use async_vt3::public_api::ip::Relationships;
         //!
         //! let vt = VtClient::new("API Key");
         //! let res =  vt.list_ip_related_ids("192.168.1.1", Relationships::Comments);
@@ -165,8 +171,8 @@ impl VtClient {
         //!
         //! ## Example Usage
         //! ```rust
-        //! use vt3::VtClient;
-        //! use vt3::public_api::ip::Relationships;
+        //! use async_vt3::VtClient;
+        //! use async_vt3::public_api::ip::Relationships;
         //!
         //! let vt = VtClient::new("API Key");
         //! let res = vt.list_ip_votes("192.168.1.1");

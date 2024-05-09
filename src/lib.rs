@@ -6,9 +6,9 @@
 /// - enterprise
 ///
 /// ```rust
-/// use vt3;
+/// use async_vt3::VtClient;
 ///
-/// let vt_client = vt3::VtClient::new("YOUR API KEY");
+/// let vt_client = VtClient::new("YOUR API KEY");
 /// ```
 ///
 pub mod public_api;
@@ -45,7 +45,7 @@ impl VtClient {
         //!
         //! ## Example usage
         //! ```rust
-        //! use vt3::VtClient;
+        //! use async_vt3::VtClient;
         //!
         //! let vt_client = VtClient::new("YOUR API KEY");
         //! ```

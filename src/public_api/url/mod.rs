@@ -13,11 +13,13 @@ impl VtClient {
         //!
         //! ## Example Usage
         //! ```rust
-        //! use vt3::VtClient;
+        //! use async_vt3::VtClient;
         //!
         //! let vt = VtClient::new("Your API Key");
         //! let url = "https://example.com";
-        //! println!("{:?}", vt.url_scan(url));
+        //! # tokio_test::block_on(async {
+        //! println!("{:?}", vt.url_scan(url).await);
+        //! # })
         //! ```
         let url = format!("{}/urls", &self.endpoint);
         let form_data = &[("public_api.url", resource_url)];
@@ -30,11 +32,13 @@ impl VtClient {
         //! ## Example Usage
         //!
         //! ```rust
-        //! use vt3::VtClient;
+        //! use async_vt3::VtClient;
         //!
         //! let vt = VtClient::new("Your API Key");
         //! let url = "https://example.com";
-        //! println!("{:?}", vt.url_scan(url));
+        //! # tokio_test::block_on(async {
+        //! println!("{:?}", vt.url_scan(url).await);
+        //! # })
         //! ```
         let url_id = resource_id.split('-').nth(1).unwrap_or(resource_id);
         let url = format!("{}/urls/{}/analyse", &self.endpoint, url_id);
@@ -48,11 +52,13 @@ impl VtClient {
         //! ## Example Usage
         //!
         //! ```rust
-        //! use vt3::VtClient;
+        //! use async_vt3::VtClient;
         //!
         //! let vt = VtClient::new("Your API Key");
         //! let resource = "https://www.example.com";
-        //! println!("{:?}", vt.url_info(resource));
+        //! # tokio_test::block_on(async {
+        //! println!("{:?}", vt.url_info(resource).await);
+        //! # })
         //! ```
         let url = format!(
             "{}/urls/{}",
@@ -70,12 +76,14 @@ impl VtClient {
         //! ## Example Usage
         //!
         //! ```ignore
-        //! use vt3::VtClient;
+        //! use async_vt3::VtClient;
         //!
         //! let vt = VtClient::new("Your API Key");
         //! let resource = "https://www.example.com";
         //! let resource_id = vt.url_scan(resource).unwrap();
-        //! println!("{:?}", vt.url_info_by_id(&resource_id.data.id))
+        //! # tokio_test::block_on(async {
+        //! println!("{:?}", vt.url_info_by_id(&resource_id.data.id).await)
+        //! # })
         //! ```
         let url_id = resource_id.split('-').nth(1).unwrap_or(resource_id);
         let url = format!("{}/urls/{}", &self.endpoint, url_id);

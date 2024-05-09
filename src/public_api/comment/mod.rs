@@ -19,7 +19,7 @@ impl VtClient {
         //!
         //! ## Example Usage
         //! ```rust
-        //! use vt3::VtClient;
+        //! use async_vt3::VtClient;
         //!
         //! let vt = VtClient::new("Your API Key");
         //! vt.get_comments(Some("10"), Some("tag:malware"), None);
@@ -50,7 +50,7 @@ impl VtClient {
         //!
         //! ## Example Usage
         //! ```rust
-        //! use vt3::VtClient;
+        //! use async_vt3::VtClient;
         //!
         //! let vt = VtClient::new("Your API Key");
         //! let comment_id = "u-011915942db556bbab5137f761efe61fed2b00598fea900360b800b193a7bf31-d94d7c8a";
@@ -65,7 +65,7 @@ impl VtClient {
         //!
         //! ## Example Usage
         //! ```rust
-        //! use vt3::VtClient;
+        //! use async_vt3::VtClient;
         //!
         //! let vt = VtClient::new("Your API Key");
         //! let comment_id = "u-011915942db556bbab5137f761efe61fed2b00598fea900360b800b193a7bf31-d94d7c8a";

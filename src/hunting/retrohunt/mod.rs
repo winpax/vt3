@@ -18,7 +18,7 @@ impl VtClient {
         //!
         //! ## Example Usage
         //! ```rust
-        //! use vt3::VtClient;
+        //! use async_vt3::VtClient;
         //!
         //! let vt = VtClient::new("Your API Key");
         //! vt.get_retrohunt_jobs(Some("10"), None, None);
@@ -49,7 +49,7 @@ impl VtClient {
         //!
         //! ## Example Usage
         //! ```rust
-        //! use vt3::VtClient;
+        //! use async_vt3::VtClient;
         //!
         //! let vt = VtClient::new("Your API Key");
         //! vt.get_retrohunt_job(1);
@@ -66,7 +66,7 @@ impl VtClient {
         //!
         //! ## Example Usage
         //! ```rust
-        //! use vt3::{VtClient, SubmitRetrohuntJob};
+        //! use async_vt3::{VtClient, SubmitRetrohuntJob};
         //!
         //! let vt = VtClient::new("Your API Key");
         //! let mut data = SubmitRetrohuntJob::default();
@@ -81,7 +81,7 @@ impl VtClient {
         //!
         //! ## Example Usage
         //! ```rust
-        //! use vt3::VtClient;
+        //! use async_vt3::VtClient;
         //!
         //! let vt = VtClient::new("Your API Key");
         //! vt.delete_retrohunt_job(1);
@@ -95,7 +95,7 @@ impl VtClient {
         //!
         //! ## Example Usage
         //! ```rust
-        //! use vt3::VtClient;
+        //! use async_vt3::VtClient;
         //!
         //! let vt = VtClient::new("Your API Key");
         //! vt.abort_retrohunt_job(1);

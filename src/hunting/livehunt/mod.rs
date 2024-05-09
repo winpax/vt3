@@ -19,7 +19,7 @@ impl VtClient {
         //!
         //! ## Example Usage
         //! ```rust
-        //! use vt3::VtClient;
+        //! use async_vt3::VtClient;
         //!
         //! let vt = VtClient::new("Your API Key");
         //! vt.get_rulesets(Some("10"), None, None, None);
@@ -53,7 +53,7 @@ impl VtClient {
         //!
         //! ## Example Usage
         //! ```rust
-        //! use vt3::VtClient;
+        //! use async_vt3::VtClient;
         //!
         //! let vt = VtClient::new("Your API Key");
         //! vt.get_ruleset("1");
@@ -73,7 +73,7 @@ impl VtClient {
         //!
         //! ## Example Usage
         //! ```rust
-        //! use vt3::{VtClient, SubmitLivehuntRuleset};
+        //! use async_vt3::{VtClient, SubmitLivehuntRuleset};
         //!
         //! let vt = VtClient::new("Your API Key");
         //! let mut data = SubmitLivehuntRuleset::default();
@@ -88,7 +88,7 @@ impl VtClient {
         //!
         //! ## Example Usage
         //! ```rust
-        //! use vt3::VtClient;
+        //! use async_vt3::VtClient;
         //!
         //! let vt = VtClient::new("Your API Key");
         //! vt.delete_ruleset("1");
@@ -109,7 +109,7 @@ impl VtClient {
         //!
         //! ## Example Usage
         //! ```rust
-        //! use vt3::{VtClient, SubmitLivehuntRuleset};
+        //! use async_vt3::{VtClient, SubmitLivehuntRuleset};
         //!
         //! let vt = VtClient::new("Your API Key");
         //! let mut data = SubmitLivehuntRuleset::default();

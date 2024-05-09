@@ -1,4 +1,4 @@
-use vt3::{
+use async_vt3::{
     public_api::ip::{CommentAttributes, Relationships, VoteAttributes},
     VtClient,
 };

@@ -19,7 +19,7 @@ impl VtClient {
         //!
         //! ## Example Usage
         //! ```rust
-        //! use vt3::VtClient;
+        //! use async_vt3::VtClient;
         //!
         //! let vt = VtClient::new("Your API Key");
         //! vt.file_info("44d88612fea8a8f36de82e1278abb02f");
@@ -33,10 +33,12 @@ impl VtClient {
         //!
         //! ## Example Usage
         //! ```rust
-        //! use vt3::VtClient;
+        //! use async_vt3::VtClient;
         //!
         //! let vt = VtClient::new("Your API Key");
-        //! println!("{:?}", vt.file_scan("data/eicar.com.txt"));
+        //! # tokio_test::block_on(async {
+        //! println!("{:?}", vt.file_scan("data/eicar.com.txt").await);
+        //! # })
         //! ```
         let mut f = File::open(file)?;
         let mut buffer = Vec::new();
@@ -54,7 +56,7 @@ impl VtClient {
         //!
         //! ## Example Usage
         //! ```rust
-        //! use vt3::VtClient;
+        //! use async_vt3::VtClient;
         //!
         //! let vt = VtClient::new("Your API Key");
         //! vt.file_rescan("44d88612fea8a8f36de82e1278abb02f");
