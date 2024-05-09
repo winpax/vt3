@@ -35,13 +35,6 @@ enterprise = []
 feeds = ["bzip2"]
 hunting = []
 
-[lib]
-name = "vt3"
-path = "src/lib.rs"
-
-[profile.dev]
-opt-level = 3
-
 [profile.release]
 codegen-units = 1
 debug = false
