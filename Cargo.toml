@@ -9,7 +9,7 @@ license-file = "LICENSE"
 name = "vt3"
 readme = "README.md"
 repository = "https://github.com/marirs/vt3-rs"
-version = "0.7.3"
+version = "0.8.0"
 
 [package.metadata.docs.rs]
 all-features = true
