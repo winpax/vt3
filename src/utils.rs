@@ -1,11 +1,8 @@
-use crate::VtResult;
 use reqwest::{multipart::Form, Client, Response, StatusCode};
 use serde::de::DeserializeOwned;
-
-#[cfg(feature = "feeds")]
-use std::io::{BufRead, BufReader};
-
 use serde::Serialize;
+
+use crate::VtResult;
 
 /// Process a regular reqwest response
 #[inline]
@@ -24,22 +21,33 @@ where
 /// Process a bzipped reqwest response
 #[cfg(feature = "feeds")]
 #[inline]
-fn process_resp_bz<T>(resp: BlockingResponse) -> VtResult<Vec<T>>
+async fn process_resp_bz<T>(resp: Response) -> VtResult<Vec<T>>
 where
     T: DeserializeOwned,
 {
+    use futures::stream::TryStreamExt;
+    use tokio::io::AsyncReadExt;
+    use tokio_util::io::StreamReader;
+
+    fn convert_error(err: reqwest::Error) -> std::io::Error {
+        std::io::Error::new(std::io::ErrorKind::Other, err)
+    }
+
     let status = resp.status();
 
     match status {
         StatusCode::OK => {
-            let read = bzip2::read::BzDecoder::new(resp);
-            Ok(BufReader::new(read)
-                .lines()
-                .flatten()
-                .filter_map(|line| serde_json::from_str(&line).ok())
-                .collect()) // 200
+            let stream = resp.bytes_stream().map_err(convert_error);
+            let stream_reader = StreamReader::new(stream);
+            let mut decoder = async_compression::tokio::bufread::BzDecoder::new(stream_reader);
+
+            let mut output = String::new();
+
+            decoder.read_to_string(&mut output).await?;
+
+            Ok(serde_json::from_str(&output)?) // 200
         }
-        _ => Err((status, resp.text()?).into()),
+        _ => Err((status, resp.text().await?).into()),
     }
 }
 
@@ -60,17 +68,18 @@ where
 
 /// GET from a URL with bzipped response
 #[cfg(feature = "feeds")]
-pub(crate) fn http_get_bz<T>(api_key: &str, user_agent: &str, url: &str) -> VtResult<Vec<T>>
+pub(crate) async fn http_get_bz<T>(api_key: &str, user_agent: &str, url: &str) -> VtResult<Vec<T>>
 where
     T: DeserializeOwned,
 {
-    let client = BlockingClient::builder().user_agent(user_agent).build()?;
+    let client = Client::builder().user_agent(user_agent).build()?;
     let resp = client
         .get(url)
         .header("x-apikey", api_key)
         .header("Accept", "application/json")
-        .send()?;
-    process_resp_bz(resp)
+        .send()
+        .await?;
+    process_resp_bz(resp).await
 }
 
 /// GET from a URL with query params

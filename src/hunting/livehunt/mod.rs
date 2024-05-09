@@ -8,7 +8,7 @@ use crate::{
 };
 
 impl VtClient {
-    pub fn get_rulesets(
+    pub async fn get_rulesets(
         &self,
         limit: Option<&str>,
         order: Option<&str>,
@@ -43,11 +43,12 @@ impl VtClient {
             &self.api_key,
             &self.user_agent,
             &url,
-            &query_params.as_slice(),
+            query_params.as_slice(),
         )
+        .await
     }
 
-    pub fn get_ruleset(&self, ruleset_id: &str) -> VtResult<SearchRulesetRoot> {
+    pub async fn get_ruleset(&self, ruleset_id: &str) -> VtResult<SearchRulesetRoot> {
         //! Retrieve a VT Hunting Livehunt ruleset given by a id
         //!
         //! ## Example Usage
@@ -61,10 +62,13 @@ impl VtClient {
             "{}/intelligence/hunting_rulesets/{}",
             self.endpoint, ruleset_id
         );
-        http_get(&self.api_key, &self.user_agent, &url)
+        http_get(&self.api_key, &self.user_agent, &url).await
     }
 
-    pub fn create_ruleset(&self, data: &SubmitLivehuntRuleset) -> VtResult<SubmitLivehuntRuleset> {
+    pub async fn create_ruleset(
+        &self,
+        data: &SubmitLivehuntRuleset,
+    ) -> VtResult<SubmitLivehuntRuleset> {
         //! Create/Submit a new VT Hunting Livehunt ruleset
         //!
         //! ## Example Usage
@@ -76,10 +80,10 @@ impl VtClient {
         //! vt.create_ruleset(&data);
         //! ```
         let url = format!("{}/intelligence/hunting_rulesets", self.endpoint);
-        http_body_post(&self.api_key, &self.user_agent, &url, data)
+        http_body_post(&self.api_key, &self.user_agent, &url, data).await
     }
 
-    pub fn delete_ruleset(&self, ruleset_id: &str) -> VtResult<String> {
+    pub async fn delete_ruleset(&self, ruleset_id: &str) -> VtResult<String> {
         //! Delete/Remove Hunting ruleset by ID
         //!
         //! ## Example Usage
@@ -93,10 +97,10 @@ impl VtClient {
             "{}/intelligence/hunting_rulesets/{}",
             self.endpoint, ruleset_id
         );
-        http_delete(&self.api_key, &self.user_agent, &url)
+        http_delete(&self.api_key, &self.user_agent, &url).await
     }
 
-    pub fn update_ruleset(
+    pub async fn update_ruleset(
         &self,
         ruleset_id: &str,
         data: &SubmitLivehuntRuleset,
@@ -115,6 +119,6 @@ impl VtClient {
             "{}/intelligence/hunting_rulesets/{}",
             self.endpoint, ruleset_id
         );
-        http_patch(&self.api_key, &self.user_agent, &url, data)
+        http_patch(&self.api_key, &self.user_agent, &url, data).await
     }
 }

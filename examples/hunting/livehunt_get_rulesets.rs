@@ -1,6 +1,7 @@
 use vt3::VtClient;
 
-fn main() {
+#[tokio::main]
+async fn main() {
     let mut args = std::env::args().skip(1);
     let api_key = match args.next().ok_or("Please provide the api key as argument!") {
         Ok(api_key) => api_key,
@@ -10,9 +11,9 @@ fn main() {
         }
     };
 
-    let res = VtClient::new(&api_key).get_rulesets(None, None, None, None);
+    let res = VtClient::new(&api_key).get_rulesets(None, None, None, None).await;
     match res {
         Ok(report) => println!("{:#?}", report),
-        Err(e) => println!("Error: {}", e.to_string()),
+        Err(e) => println!("Error: {}", e),
     }
 }

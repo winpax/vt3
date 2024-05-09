@@ -3,7 +3,8 @@ use vt3::{
     VtClient,
 };
 
-fn main() {
+#[tokio::main]
+async fn main() {
     let api_key = match std::env::args().nth(1).ok_or("Please provide the api key!") {
         Ok(api_key) => api_key,
         Err(e) => {
@@ -15,7 +16,8 @@ fn main() {
 
     let res = VtClient::new(&api_key)
         .user_agent("Chrome for Windows")
-        .ip_info(ip_address);
+        .ip_info(ip_address)
+        .await;
     match res {
         Ok(report) => println!("{:#?}", report),
         Err(e) => println!("Error: {}", e),
@@ -31,19 +33,23 @@ fn main() {
         Some("This is an example".to_string()),
         None,
     );
-    let new_comments = client.add_ip_comment(ip_address, attrs);
+    let new_comments = client.add_ip_comment(ip_address, attrs).await;
     println!("New Comments: {:?}", new_comments);
 
     // List comments for an ip address
-    let comments = client.list_ip_related_objects(ip_address, Relationships::Comments);
+    let comments = client
+        .list_ip_related_objects(ip_address, Relationships::Comments)
+        .await;
     println!("Related Comments: {:?}", comments);
 
     // List comments for an ip address
-    let comment_ids = client.list_ip_related_ids(ip_address, Relationships::Comments);
+    let comment_ids = client
+        .list_ip_related_ids(ip_address, Relationships::Comments)
+        .await;
     println!("Related Ids: {:?}", comment_ids);
 
     // List votes for an ip address
-    let votes = client.list_ip_votes(ip_address);
+    let votes = client.list_ip_votes(ip_address).await;
     println!("Votes: {:?}", votes);
 
     // Create Votes

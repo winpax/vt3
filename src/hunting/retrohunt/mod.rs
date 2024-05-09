@@ -8,7 +8,7 @@ use crate::{
 };
 
 impl VtClient {
-    pub fn get_retrohunt_jobs(
+    pub async fn get_retrohunt_jobs(
         &self,
         limit: Option<&str>,
         filter: Option<&str>,
@@ -39,11 +39,12 @@ impl VtClient {
             &self.api_key,
             &self.user_agent,
             &url,
-            &query_params.as_slice(),
+            query_params.as_slice(),
         )
+        .await
     }
 
-    pub fn get_retrohunt_job(&self, job_id: i32) -> VtResult<SearchJobRoot> {
+    pub async fn get_retrohunt_job(&self, job_id: i32) -> VtResult<SearchJobRoot> {
         //! Get RetroHunt job by ID
         //!
         //! ## Example Usage
@@ -54,10 +55,13 @@ impl VtClient {
         //! vt.get_retrohunt_job(1);
         //! ```
         let url = format!("{}/intelligence/retrohunt_jobs/{}", &self.endpoint, job_id);
-        http_get(&self.api_key, &self.user_agent, &url)
+        http_get(&self.api_key, &self.user_agent, &url).await
     }
 
-    pub fn create_retrohunt_job(&self, data: &SubmitRetrohuntJob) -> VtResult<SubmitRetrohuntJob> {
+    pub async fn create_retrohunt_job(
+        &self,
+        data: &SubmitRetrohuntJob,
+    ) -> VtResult<SubmitRetrohuntJob> {
         //! Create/Submit a RetroHunt job
         //!
         //! ## Example Usage
@@ -69,10 +73,10 @@ impl VtClient {
         //! vt.create_retrohunt_job(&data);
         //! ```
         let url = format!("{}/intelligence/retrohunt_jobs", &self.endpoint);
-        http_body_post(&self.api_key, &self.user_agent, &url, data)
+        http_body_post(&self.api_key, &self.user_agent, &url, data).await
     }
 
-    pub fn delete_retrohunt_job(&self, job_id: i32) -> VtResult<String> {
+    pub async fn delete_retrohunt_job(&self, job_id: i32) -> VtResult<String> {
         //! Delete RetroHunt job
         //!
         //! ## Example Usage
@@ -83,10 +87,10 @@ impl VtClient {
         //! vt.delete_retrohunt_job(1);
         //! ```
         let url = format!("{}/intelligence/retrohunt_jobs/{}", &self.endpoint, job_id);
-        http_delete(&self.api_key, &self.user_agent, &url)
+        http_delete(&self.api_key, &self.user_agent, &url).await
     }
 
-    pub fn abort_retrohunt_job(&self, job_id: i32) -> VtResult<String> {
+    pub async fn abort_retrohunt_job(&self, job_id: i32) -> VtResult<String> {
         //! Abort a RetroHunt job
         //!
         //! ## Example Usage
@@ -102,6 +106,6 @@ impl VtClient {
             &self.endpoint, job_id
         );
         let form_data = &[("id", job_id.as_str())];
-        http_post(&self.api_key, &self.user_agent, &url, form_data)
+        http_post(&self.api_key, &self.user_agent, &url, form_data).await
     }
 }

@@ -7,7 +7,7 @@ use crate::{
 };
 
 impl VtClient {
-    pub fn user_info(&self, id: &str) -> VtResult<UserRoot> {
+    pub async fn user_info(&self, id: &str) -> VtResult<UserRoot> {
         //! Retrieve user information.
         //!
         //! ## Example Usage
@@ -18,10 +18,10 @@ impl VtClient {
         //! vt.user_info("user_id");
         //! ```
         let url = format!("{}/users/{}", self.endpoint, id);
-        http_get(&self.api_key, &self.user_agent, &url)
+        http_get(&self.api_key, &self.user_agent, &url).await
     }
 
-    pub fn delete_user(&self, id: &str) -> VtResult<UserRoot> {
+    pub async fn delete_user(&self, id: &str) -> VtResult<UserRoot> {
         //! Delete a user.
         //!
         //! ## Example Usage
@@ -32,10 +32,10 @@ impl VtClient {
         //! vt.delete_user("user_id");
         //! ```
         let url = format!("{}/users/{}", self.endpoint, id);
-        http_delete(&self.api_key, &self.user_agent, &url)
+        http_delete(&self.api_key, &self.user_agent, &url).await
     }
 
-    pub fn api_usage(
+    pub async fn api_usage(
         &self,
         id: &str,
         start_date: Option<&str>,
@@ -64,11 +64,12 @@ impl VtClient {
             &self.api_key,
             &self.user_agent,
             &url,
-            &query_params.as_slice(),
+            query_params.as_slice(),
         )
+        .await
     }
 
-    pub fn overall_quotas(&self, id: &str) -> VtResult<OverallQuotaRoot> {
+    pub async fn overall_quotas(&self, id: &str) -> VtResult<OverallQuotaRoot> {
         //! User's overall quotas.
         //!
         //! ## Example Usage
@@ -79,10 +80,10 @@ impl VtClient {
         //! vt.overall_quotas("user_id");
         //! ```
         let url = format!("{}/users/{}/overall_quotas", self.endpoint, id);
-        http_get(&self.api_key, &self.user_agent, &url)
+        http_get(&self.api_key, &self.user_agent, &url).await
     }
 
-    pub fn group_info(&self, id: &str) -> VtResult<GroupRoot> {
+    pub async fn group_info(&self, id: &str) -> VtResult<GroupRoot> {
         //! Retrieve group information.
         //!
         //! ## Example Usage
@@ -93,10 +94,10 @@ impl VtClient {
         //! vt.overall_quotas("user_id");
         //! ```
         let url = format!("{}/groups/{}", self.endpoint, id);
-        http_get(&self.api_key, &self.user_agent, &url)
+        http_get(&self.api_key, &self.user_agent, &url).await
     }
 
-    pub fn group_members(&self, id: &str) -> VtResult<GroupMembers> {
+    pub async fn group_members(&self, id: &str) -> VtResult<GroupMembers> {
         //! Retrieve group members.
         //!
         //! ## Example Usage
@@ -107,10 +108,10 @@ impl VtClient {
         //! vt.group_members("user_id");
         //! ```
         let url = format!("{}/groups/{}/relationships/users", self.endpoint, id);
-        http_get(&self.api_key, &self.user_agent, &url)
+        http_get(&self.api_key, &self.user_agent, &url).await
     }
 
-    pub fn group_api_usage(
+    pub async fn group_api_usage(
         &self,
         id: &str,
         start_date: Option<&str>,
@@ -139,7 +140,8 @@ impl VtClient {
             &self.api_key,
             &self.user_agent,
             &url,
-            &query_params.as_slice(),
+            query_params.as_slice(),
         )
+        .await
     }
 }

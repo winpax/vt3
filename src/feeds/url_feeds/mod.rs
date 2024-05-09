@@ -4,7 +4,7 @@ use response::Root;
 use crate::{utils::http_get_bz, VtClient, VtResult};
 
 impl VtClient {
-    pub fn url_feed(&self, time: &str) -> VtResult<Vec<Root>> {
+    pub async fn url_feed(&self, time: &str) -> VtResult<Vec<Root>> {
         //! Get a URL feed batch.
         //!
         //! ## Example Usage
@@ -17,10 +17,10 @@ impl VtClient {
         //! vt.url_feed("202106131355");
         //! ```
         let url = format!("{}/feeds/urls/{}", self.endpoint, time);
-        http_get_bz(&self.api_key, &self.user_agent, &url)
+        http_get_bz(&self.api_key, &self.user_agent, &url).await
     }
 
-    pub fn url_feed_hourly(&self, time: &str) -> VtResult<Vec<Root>> {
+    pub async fn url_feed_hourly(&self, time: &str) -> VtResult<Vec<Root>> {
         //! Hourly public_api.file feed batch.
         //!
         //! ## Example Usage
@@ -33,6 +33,6 @@ impl VtClient {
         //! vt.url_feed("2021061313");
         //! ```
         let url = format!("{}/feeds/urls/hourly/{}", self.endpoint, time);
-        http_get_bz(&self.api_key, &self.user_agent, &url)
+        http_get_bz(&self.api_key, &self.user_agent, &url).await
     }
 }

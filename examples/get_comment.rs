@@ -1,6 +1,7 @@
 use vt3::VtClient;
 
-fn main() {
+#[tokio::main]
+async fn main() {
     let api_key = match std::env::args().nth(1).ok_or("Please provide the api key!") {
         Ok(api_key) => api_key,
         Err(e) => {
@@ -12,7 +13,7 @@ fn main() {
 
     let res = VtClient::new(&api_key)
         .user_agent("Chrome for Windows")
-        .get_comment(comment_id);
+        .get_comment(comment_id).await;
     match res {
         Ok(report) => println!("{:#?}", report),
         Err(e) => println!("Error: {}", e),

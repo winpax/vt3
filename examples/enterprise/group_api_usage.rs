@@ -1,6 +1,7 @@
 use vt3::VtClient;
 
-fn main() {
+#[tokio::main]
+async fn main() {
     let mut args = std::env::args().skip(1);
     let api_key = match args
         .next()
@@ -24,10 +25,11 @@ fn main() {
         }
     };
 
-    let res =
-        VtClient::new(&api_key).group_api_usage(&group_id, Some("20210618"), Some("20210620"));
+    let res = VtClient::new(&api_key)
+        .group_api_usage(&group_id, Some("20210618"), Some("20210620"))
+        .await;
     match res {
         Ok(report) => println!("{:#?}", report),
-        Err(e) => println!("Error: {}", e.to_string()),
+        Err(e) => println!("Error: {}", e),
     }
 }
