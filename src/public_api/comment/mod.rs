@@ -9,7 +9,7 @@ use crate::{
 };
 
 impl VtClient {
-    pub fn get_comments(
+    pub async fn get_comments(
         self,
         limit: Option<&str>,
         filter: Option<&str>,
@@ -42,9 +42,10 @@ impl VtClient {
             &url,
             query_params.as_slice(),
         )
+        .await
     }
 
-    pub fn get_comment(self, comment_id: &str) -> VtResult<CommentRoot> {
+    pub async fn get_comment(self, comment_id: &str) -> VtResult<CommentRoot> {
         //! Retrieve a public_api.comment information.
         //!
         //! ## Example Usage
@@ -56,10 +57,10 @@ impl VtClient {
         //! vt.get_comment(comment_id);
         //! ```
         let url = format!("{}/comments/{}", self.endpoint, comment_id);
-        http_get(&self.api_key, &self.user_agent, &url)
+        http_get(&self.api_key, &self.user_agent, &url).await
     }
 
-    pub fn delete_comment(self, comment_id: &str) -> VtResult<CommentRoot> {
+    pub async fn delete_comment(self, comment_id: &str) -> VtResult<CommentRoot> {
         //! Delete a public_api.comment.
         //!
         //! ## Example Usage
@@ -71,6 +72,6 @@ impl VtClient {
         //! vt.delete_comment(comment_id);
         //! ```
         let url = format!("{}/comments/{}", self.endpoint, comment_id);
-        http_delete(&self.api_key, &self.user_agent, &url)
+        http_delete(&self.api_key, &self.user_agent, &url).await
     }
 }

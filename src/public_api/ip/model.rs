@@ -1,3 +1,5 @@
+use std::fmt::{Display, Formatter};
+
 use crate::public_api::comment::Comments;
 use crate::public_api::file::VtFiles;
 use serde::{Deserialize, Serialize};
@@ -18,11 +20,11 @@ pub enum Relationships {
     // Urls,
 }
 
-impl Relationships {
-    pub fn to_string(&self) -> String {
+impl Display for Relationships {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         match to_value(self).unwrap() {
-            Value::String(val) => val.to_string(),
-            _ => "".to_string(),
+            Value::String(val) => write!(f, "{val}"),
+            _ => write!(f, ""),
         }
     }
 }

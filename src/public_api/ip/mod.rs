@@ -20,7 +20,7 @@ use crate::{
 };
 
 impl VtClient {
-    pub fn ip_info(&self, ip_address: &str) -> VtResult<Root> {
+    pub async fn ip_info(&self, ip_address: &str) -> VtResult<Root> {
         //! Get the report of a given IP Address
         //!
         //! ## Example Usage
@@ -31,10 +31,10 @@ impl VtClient {
         //! println!("{:?}", vt.ip_info("192.168.2.1"));
         //! ```
         let url = format!("{}/ip_addresses/{}", &self.endpoint, ip_address);
-        http_get(&self.api_key, &self.user_agent, &url)
+        http_get(&self.api_key, &self.user_agent, &url).await
     }
 
-    pub fn ip_comments(&self, ip_address: &str) -> VtResult<Comments> {
+    pub async fn ip_comments(&self, ip_address: &str) -> VtResult<Comments> {
         //! Get the comments from an ip address
         //!
         //! ## Example Usage
@@ -50,9 +50,14 @@ impl VtClient {
             self.user_agent.as_str(),
             url.as_str(),
         )
+        .await
     }
 
-    pub fn add_ip_comment(&self, ip_address: &str, attrs: CommentAttributes) -> VtResult<Comment> {
+    pub async fn add_ip_comment(
+        &self,
+        ip_address: &str,
+        attrs: CommentAttributes,
+    ) -> VtResult<Comment> {
         //! Get the comments from an ip address
         //!
         //! ## Example Usage
@@ -78,9 +83,10 @@ impl VtClient {
             url.as_str(),
             body,
         )
+        .await
     }
 
-    pub fn list_ip_related_objects(
+    pub async fn list_ip_related_objects(
         &self,
         ip_address: &str,
         relationship: Relationships,
@@ -99,7 +105,7 @@ impl VtClient {
             "{}/ip_addresses/{}/{}",
             self.endpoint.as_str(),
             ip_address,
-            relationship.to_string(),
+            relationship,
         );
         match relationship {
             Relationships::Comments | Relationships::RelatedComments => {
@@ -107,7 +113,8 @@ impl VtClient {
                     self.api_key.as_str(),
                     self.user_agent.as_str(),
                     url.as_str(),
-                )?;
+                )
+                .await?;
                 Ok(RelatedObjects::Comments(comments))
             }
             Relationships::CommunicatingFiles
@@ -117,13 +124,14 @@ impl VtClient {
                     self.api_key.as_str(),
                     self.user_agent.as_str(),
                     url.as_str(),
-                )?;
+                )
+                .await?;
                 Ok(RelatedObjects::Files(files))
             }
         }
     }
 
-    pub fn list_ip_related_ids(
+    pub async fn list_ip_related_ids(
         &self,
         ip_address: &str,
         relationship: Relationships,
@@ -142,16 +150,17 @@ impl VtClient {
             "{}/ip_addresses/{}/relationships/{}",
             self.endpoint.as_str(),
             ip_address,
-            relationship.to_string()
+            relationship
         );
         http_get(
             self.api_key.as_str(),
             self.user_agent.as_str(),
             url.as_str(),
         )
+        .await
     }
 
-    pub fn list_ip_votes(&self, ip_address: &str) -> VtResult<Votes> {
+    pub async fn list_ip_votes(&self, ip_address: &str) -> VtResult<Votes> {
         //! List votes for an ip address
         //!
         //! ## Example Usage
@@ -172,9 +181,10 @@ impl VtClient {
             self.user_agent.as_str(),
             url.as_str(),
         )
+        .await
     }
 
-    pub fn create_ip_vote(&self, ip_address: &str, attrs: VoteAttributes) -> VtResult<Vote> {
+    pub async fn create_ip_vote(&self, ip_address: &str, attrs: VoteAttributes) -> VtResult<Vote> {
         let url = format!(
             "{}/ip_addresses/{}/votes",
             self.endpoint.as_str(),
@@ -187,5 +197,6 @@ impl VtClient {
             url.as_str(),
             req,
         )
+        .await
     }
 }
