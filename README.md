@@ -6,6 +6,10 @@
 [![Build Status](https://travis-ci.com/marirs/vt3-rs.svg?branch=main)](https://travis-ci.com/marirs/vt3-rs)
 [![GitHub license](https://img.shields.io/github/license/marirs/vt3-rs)](https://github.com/marirs/vt3-rs/blob/main/LICENSE)
 
+> [!WARNING]
+> This library has been archived. It is recommended that you use the original [`vt3`](https://crates.io/crates/vt3) library,
+> with and wrap calls with `spawn_blocking` in Tokio, or the equivalent in other async runtimes.
+
 VT3 provides an easy api interface to use VirusTotal v3 REST endpoints,
 including those exclusive to VirusTotal Enterprise. See below for list of available API's:
 
